@@ -2,19 +2,21 @@
 # encoding: utf-8
 
 
-import sys
-import os
 import codecs
-import unicodedata
 import itertools
+import locale
+import os
+import sys
+import unicodedata
+
 from UniTools import *
-# import time
 
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 sys.stdin  = codecs.getreader('utf-8')(sys.stdin)
 
 bundleLibPath = os.environ["TM_BUNDLE_SUPPORT"] + "/lib/"
 
+locale.setlocale(locale.LC_ALL, locale.getdefaultlocale()[0])
 
 class SeqDict(dict):
     """Dict that remembers the insertion order."""
@@ -175,7 +177,7 @@ def main():
             # if groups[gr] has only one element shows up it as not grouped; otherwise bgcolor alternates
             if len(groups[gr]) == 1: clsstr = ''
             print "<tr class='" + clsstr + "'><td class='a'>", \
-                    t, "</td><td class='a'>", chKeys[c], "</td><td>", \
+                    t, "</td><td class='c'>", locale.format("%d", chKeys[c], grouping=True), "</td><td class='c'>", \
                     "U+%04X" % (int(c)), "</td><td>", getBlockName(c), "</td><td>", name, "</tr>"
 
     for c in unrel:
@@ -185,8 +187,8 @@ def main():
         name = data.get("%04X" % int(c), getNameForRange(c) + "-%04X" % int(c))
         if name == 1 or name[0] == '<': name = getNameForRange(c) + "-%04X" % int(c)
         if "COMBINING" in name: t = u"◌" + t
-        print "<tr><td class='a'>", t, "</td><td class='a'>", chKeys[c], \
-                "</td><td>", "U+%04X" % (int(c)), "</td><td>", \
+        print "<tr><td class='a'>", t, "</td><td class='c'>", locale.format("%d", chKeys[c], grouping=True), \
+                "</td><td class='c'>", "U+%04X" % (int(c)), "</td><td>", \
                 getBlockName(c), "</td><td>", name, "</tr>"
 
     print "</tbody></table>"
@@ -197,7 +199,9 @@ def main():
         pl = "s"
 
     print '<h2><a name="inventory">Character Inventory</a></h2>'
-    print "<p><i>%d character%s total, %d distinct</i></p>" % (total, pl, distinct)
+    print "<p><i>%s character%s total, %s distinct</i></p>" % (locale.format("%d", total, grouping=True),
+                                                               pl,
+                                                               locale.format("%d", distinct, grouping=True))
 
     print "<samp>"
     print " ".join(sorted((unichr(i) for i in chKeys.keys()), key=ord))
