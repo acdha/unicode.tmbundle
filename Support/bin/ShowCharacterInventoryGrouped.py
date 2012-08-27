@@ -40,7 +40,9 @@ class SeqDict(dict):
 
 
 HEADER_HTML = """<html>
-<head><title>Character Inventory</title>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Character Inventory</title>
 <style type='text/css'>
     @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700|Droid+Sans+Mono&subset=latin,latin-ext);
 
