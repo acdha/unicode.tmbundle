@@ -48,22 +48,21 @@ HEADER_HTML = """<html>
 
     body {
         font-family: 'Source Sans Pro', sans-serif;
-        font-size: 11pt;
+        font-size: 12pt;
     }
 
     pre, code, kbd, samp {
         font-family: "Droid Sans Mono", monospace;
-        font-size: 12pt;
+        font-size: 14pt;
     }
 
     table {
-        border: 1px solid #silver;
         border-collapse: collapse;
         width: 100%;
     }
 
     th {
-        font-size: 12pt;
+        font-size: larger;
         text-align: left;
         font-weight: 700;
         background-color: #333;
@@ -71,15 +70,19 @@ HEADER_HTML = """<html>
     }
 
     col {
-        width: 10%;
+        width: 15%;
     }
 
     col.name {
-        width: 50%;
+        width: 40%;
     }
 
     td {
-        padding: 1px;
+        padding: 1px 3px;
+    }
+
+    tr {
+        height: 2em;
     }
 
     tbody tr:nth-child(even) {
@@ -89,9 +92,17 @@ HEADER_HTML = """<html>
     .a {
         text-align: center;
     }
+
+    .c {
+        font-family: "Droid Sans Mono", monospace;
+        text-align: right;
+        padding-right: 1em;
+    }
+
     .tr1 {
         background-color: SandyBrown;
     }
+
     .tr2 {
         background-color: Cornsilk;
     }
