@@ -160,7 +160,8 @@ def main():
     total = distinct = 0
 
     # get Unicode names of all chars in doc; if not in Unicodedata, get them from UnicodeData.txt.zip
-    regExp = data = {}
+    regExp = {}
+    data = {}
     for ch in keys:
         try:
             data["%04X" % int(ch)] = unicodedata.name(wunichr(ch), "<")
@@ -174,7 +175,8 @@ def main():
                         bundleLibPath + "UnicodeData.txt.zip'").read().decode("UTF-8")
         for c in UnicodeData.splitlines():
             uniData = c.strip().split(';')
-            if len(uniData) > 1: data[uniData[0]] = uniData[1]
+            if len(uniData) > 1:
+                data[uniData[0]] = uniData[1]
 
     bgclasses = ['tr2', 'tr1']
 
