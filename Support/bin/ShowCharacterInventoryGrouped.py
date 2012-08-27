@@ -110,6 +110,19 @@ HEADER_HTML = """<html>
         text-align: center;
         cursor: pointer;
     }
+
+    table#character-inventory {
+        width: auto;
+        margin: auto;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    table#character-inventory td {
+        border: solid black 1px;
+        width: 2em;
+        height: 2em;
+    }
 </style>
 </head>
 <body>
@@ -153,7 +166,7 @@ def main():
             unrel.append(ch)
 
     print "<table>"
-    print """<colgroup><col class="character""/><col class="count"/><col class="codepoint"/><col class="block"/><col class="name"/></colgroup>"""
+    print """<colgroup><col class="character"/><col class="count"/><col class="codepoint"/><col class="block"/><col class="name"/></colgroup>"""
     print "<thead><tr><th>Character</th><th>Occurrences</th><th>UCS</th><th>Unicode Block</th><th>Unicode Name</th></tr></thead>"
     print "<tbody>"
 
@@ -170,13 +183,18 @@ def main():
         except TypeError:
             regExp["%04X" % int(ch)] = 1
 
+    # FIXME: make this a simple file scan rather than an unbounded regexp
     if regExp:
+        print >>sys.stderr, "Unmatched characters:"
+        print >>sys.stderr, regExp.keys()
         UnicodeData = os.popen("zgrep -E '^(" + "|".join(regExp.keys()) + ");' '" + \
                         bundleLibPath + "UnicodeData.txt.zip'").read().decode("UTF-8")
         for c in UnicodeData.splitlines():
             uniData = c.strip().split(';')
             if len(uniData) > 1:
                 data[uniData[0]] = uniData[1]
+
+    # FIXME: merge the two duplicate HTML output blocks and properly escape entities
 
     bgclasses = ['tr2', 'tr1']
 
@@ -218,9 +236,14 @@ def main():
                                                                pl,
                                                                locale.format("%d", distinct, grouping=True))
 
-    print "<samp>"
-    print " ".join(sorted((unichr(i) for i in chKeys.keys()), key=ord))
-    print "</samp>"
+    print '<table id="character-inventory">'
+    print '<tr>'
+    for i, c in enumerate(sorted((unichr(i) for i in chKeys.keys()), key=ord)):
+        if i > 0 and i % 25 == 0:
+            print '</tr><tr>'
+        print '<td>', c, '</td>',
+    print '</tr>'
+    print "</table>"
 
     print "</body></html>"
 
